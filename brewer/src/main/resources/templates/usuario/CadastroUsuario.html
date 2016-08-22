@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="'layout/LayoutPadrao'">
+<head>
+	<title>Cadastro de cliente</title>
+</head>
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>
+				Cadastro de Usuário
+			</h1>	
+		</div>
+	</div>
+	<div class="container-fluid">
+		<form>
+			<div class="row">
+				<div class="form-group col-sm-12">
+					<label for="nome">Nome</label>
+					<input id="nome" class="form-control"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<label for="email">E-mail</label>
+					<input id="email" class="form-control"/>
+				</div>
+				<div class="form-group col-sm-3	">
+					<label for="dataNascimento">Data de nascimento</label>
+					<input id="dataNascimento" class="form-control"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-sm-3">
+					<label for="senha">Senha</label>
+					<input id="senha" class="form-control" type="password"/>
+				</div>
+				<div class="form-group col-sm-3">
+					<label for="confirmacaoSenha">Confirmação de senha</label>
+					<input id="confirmacaoSenha" class="form-control" type="password"/>
+				</div>
+				<div class="form-group col-sm-3">
+					<label for="status">Status</label>
+					<div class="checkbox">
+						<input id="status" type="checkbox"/>
+						<label for="status">Ativo</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Grupos</label>
+				<div>
+					<div class="checkbox checkbox-inline">
+						<input id="administrador" type="checkbox"/>
+						<label for="administrador">Administrador</label>
+					</div>
+					<div class="checkbox checkbox-inline">
+						<input id="vendendor" type="checkbox"/>
+						<label for="vendendor">Vendedor</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary" type="submit">Salvar</button>
+			</div>
+		</form>
+	</div>
+
+</section>
+</body>
+</html>
