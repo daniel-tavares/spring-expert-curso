@@ -5,6 +5,7 @@
 	layout:decorator="'layout/LayoutPadrao'">
 <head>
 	<title>Cadastro de cliente</title>
+	<link rel="stylesheet" type="text/css" href="../../static/vendors/stylesheets/bootstrap-switch.min.css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
 </head>
 <body>
 <section layout:fragment="conteudo">
@@ -44,9 +45,9 @@
 				</div>
 				<div class="form-group col-sm-3">
 					<label for="status">Status</label>
-					<div class="checkbox">
-						<input id="status" type="checkbox"/>
-						<label for="status">Ativo</label>
+					<div>
+						<input id="status" type="checkbox" class="js-status" 
+							data-size="small" data-off-color="danger" data-on-text="Ativo" data-off-text="Inativo"/>
 					</div>
 				</div>
 			</div>
@@ -70,5 +71,11 @@
 	</div>
 
 </section>
+<th:block layout:fragment="javascript-extra">
+	<script src="../../static/javascripts/vendors/bootstrap-switch.min.js" th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$(".js-status").bootstrapSwitch();
+	</script>
+</th:block>
 </body>
 </html>
