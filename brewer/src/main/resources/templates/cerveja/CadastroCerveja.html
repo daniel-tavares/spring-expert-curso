@@ -17,11 +17,12 @@
 		</div>
 	</div>
 	<div class="container-fluid">
-		<!-- <div class="alert  alert-danger  alert-dismissible" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<i class="fa  fa-exclamation-circle"></i> Já existe um produto com o nome informado.
-		</div> -->
+		
+		
+		<th:block th:include="fragments/MessagemSucesso"></th:block>
+		
 		<form method="POST" class="form-vertical  js-form-loading" th:object="${cerveja}">
+			<th:block th:include="fragments/MessagensErrorValidacao"></th:block>
 			<div class="row">
 				<div class="col-sm-2 form-group">
 					<label for="sku">SKU</label>
