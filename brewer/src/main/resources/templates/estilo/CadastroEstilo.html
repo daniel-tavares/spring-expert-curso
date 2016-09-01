@@ -16,10 +16,12 @@
 		</div>
 	</div>
 	<div class="container-fluid">
-		<form action="POST">
-			<div class="form-group">
-				<label for="nome">Nome</label>
-				<input id="nome" class="form-control"/>
+		<th:block th:replace="fragments/MessagemSucesso"></th:block>
+		<form method="POST" th:object="${estilo}">
+			<th:block th:include="fragments/MessagensErrorValidacao"></th:block>
+			<div class="form-group" th:classappend="${#fields.hasErrors('nome')}">
+				<label for="nome" class="label-control">Nome</label>
+				<input id="nome" class="form-control" th:field="*{nome}"/>
 			</div>
 			
 			<button class="btn btn-primary">Salvar</button>
