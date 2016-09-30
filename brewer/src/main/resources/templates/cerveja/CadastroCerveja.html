@@ -25,9 +25,9 @@
 			<brewer:message/>
 			
 			<div class="row">
-				<div class="col-sm-2 form-group" brewer:classforerror="sku">
-					<label for="sku" class="control-label">SKU</label>
-					<input id="sku" type="text" class="form-control" th:field="*{sku}"/>
+				<div class="col-sm-2" brewer:classforerror="sku">
+					<label for="sku" class="">SKU</label>
+					<input id="sku" type="text" class="" th:field="*{sku}"/>
 				</div>
 				<div class="col-sm-10 form-group" brewer:classforerror="nome">
 					<label for="input-produto-nome" class="control-label">Nome</label>
@@ -104,11 +104,17 @@
 			
 			<div class="row">
 				<div class="form-group col-sm-12">
+					
+					<input type="hidden" th:field="*{foto}"/>
+					<input type="hidden" th:field="*{contentType}"/>
+					
 					<label class="control-label">Foto</label>
-					<div id="upload-drop" class="bw-upload">
-						<i class="glyphicon glyphicon-cloud-upload"></i>
-						<span>Arraste a foto aqui ou</span>
-						<a class="bw-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpeg,.jpg,.png"/></a>	
+					<div class="js-foto-cerveja">
+						<div id="upload-drop" class="bw-upload">
+							<i class="glyphicon glyphicon-cloud-upload"></i>
+							<span>Arraste a foto aqui ou</span>
+							<a class="bw-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpeg,.jpg,.png"/></a>	
+						</div>
 					</div>
 				</div>
 			</div>
@@ -116,18 +122,46 @@
 		</form>
 	</div>
 	<div th:replace="estilo/CadastroRapidoEstilo :: modal"></div>
+	<th:block th:replace="handlebars/FotoCerveja"></th:block>
 </section>
 <th:block layout:fragment="javascript-extra">
 	<script th:src="@{/javascripts/estilo.cadastro-rapido.js}"></script>
 	<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
 	<script th:src="@{/javascripts/vendors/upload.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
 	
 	<script>
 		$(function() {
 			var settings = {
 					type:'json',
 					filelimit: 1,
-					allow: '*.(jpg|jpeg|png)'
+					allow: '*.(jpg|jpeg|png)',
+					action: '/brewer/fotos',
+					complete: function(resposta) {
+						var inputNomeFoto = $('input[name=foto]');
+						var inputContentType = $('input[name=contentType]');
+						
+						var htmlFotoCervejaTemplate = $('#foto-cerveja').html();
+						var template = Handlebars.compile(htmlFotoCervejaTemplate);
+						var htmlFotoCerveja = template({nomeFoto: resposta.nome});
+
+						var containerFotoCerveja = $('.js-foto-cerveja');
+
+						var uploadDrop = $('#upload-drop');
+						
+						inputNomeFoto.val(resposta.nome);
+ 						inputContentType.val(resposta.contentType);
+						
+ 						uploadDrop.hide();
+						containerFotoCerveja.append(htmlFotoCerveja);
+						
+						$('.js-remove-foto').on('click', function() {
+							$('.js-container-foto-cerveja').remove();
+							uploadDrop.show();
+							inputNomeFoto.val('');
+							inputContentType.val('');
+						});
+					}
 			}
 			UIkit.uploadSelect($('#upload-select') ,settings);
 			UIkit.uploadDrop($('#upload-drop') ,settings);
