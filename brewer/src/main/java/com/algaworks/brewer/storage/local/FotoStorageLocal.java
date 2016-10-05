@@ -69,7 +69,7 @@ public class FotoStorageLocal implements FotoStorage {
 	}
 	
 	private String renomearArquivo(String nomeOriginal) {
-		String novoNome = UUID.randomUUID().toString() + "_" + nomeOriginal;
+		String novoNome = UUID.randomUUID().toString() + "_" + nomeOriginal.replaceAll("\\s", "");
 		if(logger.isDebugEnabled()) {
 			logger.debug(String.format("Nome original: %s, novo nome do arquivo %s", nomeOriginal, novoNome));
 		}
