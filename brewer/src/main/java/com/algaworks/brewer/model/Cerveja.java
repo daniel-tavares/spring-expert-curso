@@ -154,6 +154,27 @@ public class Cerveja implements Serializable{
 	public void setEstilo(Estilo estilo) {
 		this.estilo = estilo;
 	}
+	
+	public String getFoto() {
+		return foto;
+	}
+	
+	public String getFotoOuMock() {
+		return StringUtils.isEmpty(foto) ? "cerveja-mock.png" : foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -179,24 +200,4 @@ public class Cerveja implements Serializable{
 		return true;
 	}
 
-	public String getFoto() {
-		return foto;
-	}
-	
-	public String getFotoOuMock() {
-		return StringUtils.isEmpty(foto) ? "cerveja-mock.png" : foto;
-	}
-
-	public void setFoto(String foto) {
-		this.foto = foto;
-	}
-
-	public String getContentType() {
-		return contentType;
-	}
-
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-	
 }

@@ -31,28 +31,28 @@
 		</div>
 	</div>
 	<div class="container-fluid">
-		<form method="GET">
+		<form method="GET" th:object="${cervejaFilter}">
 			<div class="row">
 				<div class="col-sm-6 form-group">
 					<label for="sku" class="control-label">SKU</label>
-					<input id="sku" class="form-control"/>
+					<input id="sku" class="form-control" th:field="*{sku}"/>
 				</div>
 				<div class="col-sm-6 form-group">
 					<label for="nome" class="control-label">Nome</label>
-					<input id="nome" class="form-control"/>
+					<input id="nome" class="form-control" th:field="*{nome}"/>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-6 form-group">
 					<label for="estilo" class="control-label">Estilo</label>
-					<select id="estilo" class="form-control">
+					<select id="estilo" class="form-control" th:field="*{estilo}">
 						<option value="">Todos os estilos</option>
 						<option th:each="estilo : ${estilos}" th:value="${estilo.codigo}">[[${estilo.nome}]]</option>
 					</select>
-				</div>
+				</div> 
 				<div class="col-sm-6 form-group">
 					<label for="sabor" class="control-label">Sabor</label>
-					<select id="sabor" class="form-control">
+					<select id="sabor" class="form-control" th:field="*{sabor}">
 						<option value="">Todos os sabores</option>
 						<option th:each="sabor : ${sabores}" th:value="${sabor}">[[${sabor.descricao}]]</option>
 					</select>
@@ -64,22 +64,22 @@
 					<div>
 						<th:block th:each="origem: ${origens}">
 							<div class="radio radio-inline">
-								<input th:id="|id_${origem}|" type="radio" name="origem"/>
+								<input th:id="|id_${origem}|" type="radio" th:value="${origem}" th:field="*{origem}"/>
 								<label th:for="|id_${origem}|">[[${origem.descricao}]]</label>
 							</div>
 						</th:block>
 						<div class="radio radio-inline">
-							<input th:id="todasOrigens" type="radio" name="origem"/>
+							<input th:id="todasOrigens" type="radio" th:checked="*{origem} == null" name="origem"/>
 							<label th:for="todasOrigens" class="control-label">Todas</label>
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-6 form-group">
-					<label for="precoDe">Preço unitário</label>
+					<label for="precoDe">Valor unitário</label>
 					<div class="form-inline">
-						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" id="precoDe"/>
+						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" id="precoDe" th:field="*{valorDe}"/>
 						<label for="precoAte" class="aw-form-label-between">até</label>
-						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" id="precoAte"/>
+						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" id="precoAte" th:field="*{valorAte}"/>
 					</div>
 				</div>
 			</div>
@@ -99,7 +99,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="cerveja : ${cervejas}">
+					<tr th:each="cerveja : ${cervejasPage.conteudo}">
 						<td class="text-center">
 							<img th:src="@{/fotos/thumbnail.{fotoNome}(fotoNome=${cerveja.fotoOuMock})}" class="img-responsive"/>
 						</td>
@@ -117,11 +117,28 @@
 							</a>
 						</td>
 					</tr>
-					<tr th:if="${#lists.isEmpty(cervejas)}">
+					<tr th:if="${cervejasPage.vazia}">
 						<td colspan="7">Nenhuma cerveja encontrada</td>
 					</tr>
 				</tbody>
 			</table>
+		</div>
+		<div class="col-sm-12 text-center" th:if="${not cervejasPage.vazia}">
+			<nav>
+				<ul class="pagination pagination-sm">
+					<li th:class="${cervejasPage.first} ? disabled">
+						<a th:href="${cervejasPage.urlParaPagina(cervejasPage.atual - 1)}" th:remove="${cervejasPage.first} ? tag"><span>&laquo;</span></a>
+					</li>
+					<th:block th:each="pagina : ${#numbers.sequence(1, cervejasPage.total)}" th:with="numeroPagina=${pagina - 1}, paginaAtual=${cervejasPage.atual}">
+						<li th:class="${numeroPagina ==  paginaAtual} ? active">
+							<a th:href="${cervejasPage.urlParaPagina(numeroPagina)}">[[${pagina}]]</a>
+						</li>
+					</th:block>
+					<li th:class="${cervejasPage.last} ? disabled">
+						<a th:href="${cervejasPage.urlParaPagina(cervejasPage.atual + 1)}" th:remove="${cervejasPage.last} ? tag"><span>&raquo;</span></a>
+					</li>
+				</ul>
+			</nav>
 		</div>
 	</div>
 </section>
