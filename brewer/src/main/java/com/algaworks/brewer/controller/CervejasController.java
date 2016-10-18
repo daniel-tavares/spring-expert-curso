@@ -66,4 +66,5 @@ public class CervejasController {
 		mv.addObject("cervejasPage", pagina);
 		return mv;
 	}
+	
 }

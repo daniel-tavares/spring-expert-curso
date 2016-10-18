@@ -4,11 +4,10 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	xmlns:brewer="http://algaworks.brewer.com"
 	layout:decorator="'layout/LayoutPadrao'">
-<body>
 <head>
-	<title>Cadastro de Cerveja</title>
-	<link rel="stylesheet" th:href="@{/stylesheets/vendors/upload.min.css}">
+	<title>Pesquisa de Cerveja</title>
 </head>
+<body>
 
 <section layout:fragment="conteudo">
 	<div class="page-header">
@@ -90,8 +89,12 @@
 				<thead>
 					<tr>
 						<th class="table-cervejas-col-foto"></th>
-						<th class="table-cervejas-col-sku">SKU</th>
-						<th class="table-cervejas-col-nome">Nome</th>
+						<th class="table-cervejas-col-sku">
+							<brewer:order page="${cervejasPage}" field="sku" text="SKU">
+						</th>
+						<th class="table-cervejas-col-nome">
+							<brewer:order page="${cervejasPage}" field="nome" text="Nome">
+						</th>
 						<th class="table-cervejas-col-estilo">Estilo</th>
 						<th class="table-cervejas-col-origem">Origem</th>
 						<th class="table-cervejas-col-valor">Valor</th>
