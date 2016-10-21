@@ -5,11 +5,13 @@ import javax.persistence.PersistenceContext;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -34,8 +36,14 @@ public class EstilosImpl implements EstilosQueries{
 		criteria.setFirstResult(primeiroElemento);
 		criteria.setMaxResults(totalPorPagina);
 		
-		adicionarFiltro(filter, criteria);
+		Sort sort = pageable.getSort();
+		if(sort != null) {
+			String propriedade = sort.iterator().next().getProperty();
+			Sort.Order order = sort.getOrderFor(propriedade);
+			criteria.addOrder(order.isAscending() ? Order.asc(propriedade) : Order.desc(propriedade));
+		}
 		
+		criteria = adicionarFiltro(filter, criteria);
 		return new PageImpl<>(criteria.list(), pageable, total(filter));
 		
 	}

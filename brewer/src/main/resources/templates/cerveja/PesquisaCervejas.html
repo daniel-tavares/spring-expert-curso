@@ -126,23 +126,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="col-sm-12 text-center" th:if="${not cervejasPage.vazia}">
-			<nav>
-				<ul class="pagination pagination-sm">
-					<li th:class="${cervejasPage.first} ? disabled">
-						<a th:href="${cervejasPage.urlParaPagina(cervejasPage.atual - 1)}" th:remove="${cervejasPage.first} ? tag"><span>&laquo;</span></a>
-					</li>
-					<th:block th:each="pagina : ${#numbers.sequence(1, cervejasPage.total)}" th:with="numeroPagina=${pagina - 1}, paginaAtual=${cervejasPage.atual}">
-						<li th:class="${numeroPagina ==  paginaAtual} ? active">
-							<a th:href="${cervejasPage.urlParaPagina(numeroPagina)}">[[${pagina}]]</a>
-						</li>
-					</th:block>
-					<li th:class="${cervejasPage.last} ? disabled">
-						<a th:href="${cervejasPage.urlParaPagina(cervejasPage.atual + 1)}" th:remove="${cervejasPage.last} ? tag"><span>&raquo;</span></a>
-					</li>
-				</ul>
-			</nav>
-		</div>
+		<brewer:paginacao page="${cervejasPage}">
 	</div>
 </section>
 </body>

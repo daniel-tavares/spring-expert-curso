@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="paginacao (pagina)">
+<div class="col-sm-12 text-center" th:if="${not pagina.vazia}">
+	<nav>
+		<ul class="pagination pagination-sm">
+			<li th:class="${pagina.first} ? disabled">
+				<a th:href="${pagina.urlParaPagina(pagina.atual - 1)}" th:remove="${pagina.first} ? tag"><span>&laquo;</span></a>
+			</li>
+			<th:block th:each="paginaNumeroLabel : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${paginaNumeroLabel- 1}, paginaAtual=${pagina.atual}">
+				<li th:class="${numeroPagina ==  paginaAtual} ? active">
+					<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${paginaNumeroLabel}]]</a>
+				</li>
+			</th:block>
+			<li th:class="${pagina.last} ? disabled">
+				<a th:href="${pagina.urlParaPagina(pagina.atual + 1)}" th:remove="${pagina.last} ? tag"><span>&raquo;</span></a>
+			</li>
+		</ul>
+	</nav>
+</div>
+</th:block>
+</html>
