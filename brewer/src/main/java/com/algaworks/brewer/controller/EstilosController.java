@@ -68,7 +68,6 @@ public class EstilosController {
 	@GetMapping
 	public ModelAndView pesquisar(EstiloFilter filter, BindingResult result, @PageableDefault(size=2) Pageable pageable) {
 		PageWrapper<Estilo> estilosFiltrados = new PageWrapper<>(estilos.filtrar(filter, pageable), ServletUriComponentsBuilder.fromCurrentRequest());
-		System.out.println(estilosFiltrados.getTotal());
 		return new ModelAndView("estilo/PesquisaEstilos", "estilosPage", estilosFiltrados);
 	}
 }

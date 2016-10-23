@@ -6,45 +6,33 @@ import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.repository.filter.CervejaFilter;
+import com.algaworks.brewer.repository.paginacao.PaginacaoUtil;
 
 public class CervejasImpl implements CervejasQueries{
 	
 	@PersistenceContext
 	private EntityManager manager;
+	
+	@Autowired
+	private PaginacaoUtil paginacaoUtil;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly=true)
 	public Page<Cerveja> filtrar(CervejaFilter filter, Pageable pageable) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Cerveja.class);
-		
-		int paginaAtual = pageable.getPageNumber();
-		int totalRegistrosPorPagina = pageable.getPageSize();
-		int primeiroResultado = paginaAtual * totalRegistrosPorPagina; 
-		
-		criteria.setFirstResult(primeiroResultado);
-		criteria.setMaxResults(totalRegistrosPorPagina);
-		
-		Sort sort = pageable.getSort();
-		if(sort != null) {
-			Sort.Order order = sort.iterator().next();
-			String field = order.getProperty();
-			criteria.addOrder(order.isAscending() ? Order.asc(field) : Order.desc(field));
-		}
-		
-		
+		criteria = paginacaoUtil.preparar(pageable, criteria);
 		criteria = adicionarFiltro(filter, criteria);
 		return new PageImpl<>(criteria.list(), pageable, total(filter));
 	}
