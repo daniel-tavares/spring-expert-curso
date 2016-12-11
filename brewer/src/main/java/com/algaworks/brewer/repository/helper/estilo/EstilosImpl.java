@@ -31,11 +31,10 @@ public class EstilosImpl implements EstilosQueries{
 	@Override
 	@Transactional(readOnly=true)
 	public Page<Estilo> filtrar(EstiloFilter filter, Pageable pageable) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Estilo.class);
-		
+		Criteria criteria = getCriteria();
 		criteria = paginacaoUtil.preparar(pageable, criteria);
-		
 		criteria = adicionarFiltro(filter, criteria);
+		
 		return new PageImpl<>(criteria.list(), pageable, total(filter));
 		
 	}
@@ -50,10 +49,12 @@ public class EstilosImpl implements EstilosQueries{
 	}
 
 	private long total(EstiloFilter filter) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Estilo.class);
+		Criteria criteria = getCriteria();
 		criteria = adicionarFiltro(filter, criteria);
 		return (long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-
+	private Criteria getCriteria() {
+		return manager.unwrap(Session.class).createCriteria(Estilo.class);
+	}
 }

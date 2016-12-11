@@ -2,6 +2,8 @@ package com.algaworks.brewer.controller.page;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -11,9 +13,11 @@ public class PageWrapper<T> {
 	public Page<T> page;
 	private UriComponentsBuilder uriComponentsBuilder;
 	
-	public PageWrapper(Page<T> page, UriComponentsBuilder uriComponentsBuilder) {
+	public PageWrapper(Page<T> page, HttpServletRequest request) {
 		this.page = page;
-		this.uriComponentsBuilder = uriComponentsBuilder;
+		String url = request.getRequestURL().append(
+				request.getQueryString() != null ? "?" + request.getQueryString() : "").toString().replaceAll("\\+", "%20");
+		this.uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(url);
 	}
 	
 	public List<T> getConteudo() {
@@ -41,7 +45,7 @@ public class PageWrapper<T> {
 	}
 	
 	public String urlOrdenada(String propriedade) {
-		UriComponentsBuilder uriBuilderOrder = UriComponentsBuilder.fromUriString(uriComponentsBuilder.build(true).encode().toUriString());
+		UriComponentsBuilder uriBuilderOrder = uriComponentsBuilder.cloneBuilder();
 		String ordem = propriedade + "," + inverterDirecao(propriedade);
 		return uriBuilderOrder.replaceQueryParam("sort", ordem).build(true).encode().toUriString();
 	}

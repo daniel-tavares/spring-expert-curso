@@ -1,5 +1,6 @@
 package com.algaworks.brewer.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.algaworks.brewer.controller.page.PageWrapper;
 import com.algaworks.brewer.model.Estilo;
@@ -66,8 +66,8 @@ public class EstilosController {
 	}
 	
 	@GetMapping
-	public ModelAndView pesquisar(EstiloFilter filter, BindingResult result, @PageableDefault(size=2) Pageable pageable) {
-		PageWrapper<Estilo> estilosFiltrados = new PageWrapper<>(estilos.filtrar(filter, pageable), ServletUriComponentsBuilder.fromCurrentRequest());
+	public ModelAndView pesquisar(EstiloFilter filter, BindingResult result, @PageableDefault(size=2) Pageable pageable, HttpServletRequest request) {
+		PageWrapper<Estilo> estilosFiltrados = new PageWrapper<>(estilos.filtrar(filter, pageable), request);
 		return new ModelAndView("estilo/PesquisaEstilos", "estilosPage", estilosFiltrados);
 	}
 }

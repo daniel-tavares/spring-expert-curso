@@ -71,6 +71,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		 resolver.setPrefix("classpath:/templates/");
 		 resolver.setTemplateMode(TemplateMode.HTML);
 		 resolver.setSuffix(".html");
+		 resolver.setCharacterEncoding("UTF-8");
 		 return resolver;
 	}
 	
