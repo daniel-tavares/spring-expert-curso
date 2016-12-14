@@ -72,15 +72,22 @@
 				<div class="form-group col-sm-4">
 					<label for="estado">Estado</label>
 					<select id="estado" class="form-control">
-						<option>Selecione o estado</option>
+						<option value="">Selecione o estado</option>
+						<th:block th:each="estado : ${estados}">
+							<option th:value="${estado.codigo}" th:text="${estado.nome}">Selecione o estado</option>
+						</th:block>
 					</select>
 				</div>			
 				<div class="form-group col-sm-4">
 					<label for="cidade">Cidade</label>
-					<select id="cidade" class="form-control">
-						<option>Selecione a cidade</option>
-					</select>
-				</div>			
+					<div class="bw-field-action">
+						<select id="cidade" class="form-control" th:data-url="@{/cidades}" disabled>
+							<option>Selecione a cidade</option>
+						</select>
+						<div class="bw-field-action__icon js-img-loading" style="display:none">
+							<img th:src="@{/images/mini-loading.gif}" />
+						</div>
+					</div>			
 			</div>
 			<div class="form-group">
 				<button class="btn  btn-primary" type="submit">Salvar</button>
@@ -90,6 +97,7 @@
 </section>
 <th:block layout:fragment="javascript-extra">
 	<script th:src="@{/javascripts/cliente.mascara-cpf-cnpj.js}"></script>
+	<script th:src="@{/javascripts/cliente.combo-estado-cidade.js}"></script>
 </th:block>
 </body>
 </html>

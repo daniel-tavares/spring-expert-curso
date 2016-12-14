@@ -19,7 +19,7 @@ import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.repository.filter.CervejaFilter;
 import com.algaworks.brewer.repository.paginacao.PaginacaoUtil;
 
-public class CervejasImpl implements CervejasQueries{
+public class CervejasImpl implements CervejasQueries {
 	
 	@PersistenceContext
 	private EntityManager manager;
