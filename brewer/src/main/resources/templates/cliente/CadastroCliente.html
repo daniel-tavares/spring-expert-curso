@@ -2,6 +2,7 @@
 <html lang="pt"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:brewer="http://algaworks.brewer.com"
 	layout:decorator="'layout/LayoutPadrao'">
 <head>
 	<title>Cadastro de cliente</title>
@@ -17,77 +18,78 @@
 		</div>
 	</div>
 	<div class="container-fluid">
-		<form class="form-vertical">
-			<div class="form-group">
-				<label for="nome">Nome</label>
-				<input id="nome" class="form-control"/>
+		<form method="POST" th:object="${cliente}">
+			<brewer:message/>
+			<div class="form-group bw-required" brewer:classforerror="nome">
+				<label for="nome" class="control-label">Nome</label>
+				<input id="nome" class="form-control" th:field="*{nome}"/>
 			</div>
 			<div class="row">
-				<div class="form-group col-sm-4">
+				<div class="form-group col-sm-4 bw-required" brewer:classforerror="tipoPessoa">
 					<div>
-						<label>Tipo pessoa</label>
+						<label class="control-label">Tipo pessoa</label>
 					</div>
 					<th:block th:each="tipoPessoa : ${tiposPessoa}">
 						<div class="radio radio-inline">
-							<input th:id="|id_${tipoPessoa}|" type="radio" class="js-radio-tipo-pessoa" name="tipoPessoa" 
-								th:data-documento="${tipoPessoa.documento}" th:data-mascara="${tipoPessoa.mascara}"/>
+							<input th:id="|id_${tipoPessoa}|" type="radio" class="js-radio-tipo-pessoa" 
+								th:data-documento="${tipoPessoa.documento}" th:data-mascara="${tipoPessoa.mascara}"
+								th:field="*{tipoPessoa}" th:value="${tipoPessoa}"/>
 							<label th:for="|id_${tipoPessoa}|" class="control-label" th:text="${tipoPessoa.descricao}"></label>
 						</div>
 					</th:block>
 				</div>
 				<div class="form-group col-sm-8">
 					<label for="cpfCnpj">CPF/CNPJ</label>
-					<input id="cpfCnpj" class="form-control" disabled/>
+					<input id="cpfCnpj" class="form-control" disabled th:field="*{cpfOuCnpj}"/>
 				</div>
 			</div>
 			<div class="row">
 				<div class="form-group col-sm-4">
 					<label for="telefone">Telefone</label>
-					<input id="telefone" class="form-control js-phone-number"/>
+					<input id="telefone" class="form-control js-phone-number" th:field="*{telefone}"/>
 				</div>
-				<div class="form-group col-sm-8">
-					<label for="email">E-mail</label>
-					<input id="email" class="form-control"/>
+				<div class="form-group col-sm-8 bw-required" brewer:classforerror="email">
+					<label class="control-label" for="email">E-mail</label>
+					<input id="email" class="form-control" th:field="*{email}"/>
 				</div>
 			</div>
 			<div class="row">
 				<div class="form-group col-sm-4">
 					<label for="logadouro">Logadouro</label>
-					<input id="logadouro" class="form-control"/>
+					<input id="logadouro" class="form-control" th:field="*{endereco.logradouro}"/>
 				</div>			
 				<div class="form-group col-sm-4">
 					<label for="numero">Número</label>
-					<input id="numero" class="form-control"/>
+					<input id="numero" class="form-control" th:field="*{endereco.numero}"/>
 				</div>			
 				<div class="form-group col-sm-4">
 					<label for="complemento">Complemento</label>
-					<input id="complemento" class="form-control"/>
+					<input id="complemento" class="form-control" th:field="*{endereco.complemento}"/>
 				</div>			
 			</div>
 			<div class="row">
 				<div class="form-group col-sm-4">
 					<label for="cep">CEP</label>
-					<input id="cep" class="form-control js-cep"/>
+					<input id="cep" class="form-control js-cep" th:field="*{endereco.cep}"/>
 				</div>			
 				<div class="form-group col-sm-4">
 					<label for="estado">Estado</label>
-					<select id="estado" class="form-control">
-						<option value="">Selecione o estado</option>
-						<th:block th:each="estado : ${estados}">
-							<option th:value="${estado.codigo}" th:text="${estado.nome}">Selecione o estado</option>
-						</th:block>
-					</select>
+					<select id="estado" class="form-control" th:field="*{endereco.estado}">
+	                    <option value="">Selecione o estado</option>
+	                    <option th:each="estado : ${estados}" th:value="${estado.codigo}" th:text="${estado.nome}">São Paulo</option>
+	                </select>
 				</div>			
 				<div class="form-group col-sm-4">
 					<label for="cidade">Cidade</label>
 					<div class="bw-field-action">
-						<select id="cidade" class="form-control" th:data-url="@{/cidades}" disabled>
-							<option>Selecione a cidade</option>
+						<input type="hidden" id="codigoCidadeSelecionada" th:value="*{endereco.cidade} != null ? *{endereco.cidade.codigo}"/>
+						<select id="cidade" class="form-control" th:data-url="@{/cidades}" th:field="*{endereco.cidade}">
 						</select>
 						<div class="bw-field-action__icon js-img-loading" style="display:none">
 							<img th:src="@{/images/mini-loading.gif}" />
 						</div>
 					</div>			
+				</div>
 			</div>
 			<div class="form-group">
 				<button class="btn  btn-primary" type="submit">Salvar</button>

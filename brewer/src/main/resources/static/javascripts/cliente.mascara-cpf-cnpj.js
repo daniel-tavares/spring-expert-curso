@@ -10,14 +10,24 @@ Brewer.MascaraCpfCnpj = (function() {
 	
 	MascaraCpfCnpj.prototype.iniciar = function() {
 		this.radioTipoPessoa.on('change', onTipoPessoaAlterado.bind(this));
+		var tipoPessoaSelecionada = this.radioTipoPessoa.filter(':checked')[0];
+		if (tipoPessoaSelecionada) {
+			aplicarMascara.call(this, $(tipoPessoaSelecionada));
+		}
+		
 	}
 	
 	function onTipoPessoaAlterado(evento) {
 		var tipoPessoaSelecionado = $(evento.currentTarget);
-		var documento = tipoPessoaSelecionado.data('documento');
-		this.labelCpfCnpj.text(documento);
-		this.inputCpfCnpj.mask(tipoPessoaSelecionado.data('mascara'));
+		aplicarMascara.call(this, tipoPessoaSelecionado);
 		this.inputCpfCnpj.val('');
+	}
+	
+	function aplicarMascara(tipoPessoa) {
+		var documento = tipoPessoa.data('documento');
+		this.labelCpfCnpj.text(documento);
+
+		this.inputCpfCnpj.mask(tipoPessoa.data('mascara'));
 		this.inputCpfCnpj.removeAttr('disabled');
 		
 	}
