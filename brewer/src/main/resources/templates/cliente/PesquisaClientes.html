@@ -53,6 +53,7 @@
 						</th>
 						<th>CPF/CNPJ</th>
 						<th>Telefone</th>
+						<th>Cidade/Estado</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -68,6 +69,9 @@
 						</td>
 						<td>
 							[[${cliente.telefone}]]
+						</td>
+						<td>
+							[[${cliente.endereco.nomeCidadeSiglaEstado}]]
 						</td>
 					</tr>
 				</tbody>	
