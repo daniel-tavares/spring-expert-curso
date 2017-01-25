@@ -38,7 +38,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @ComponentScan(basePackageClasses=CervejasController.class)
 @EnableWebMvc
 @EnableSpringDataWebSupport
-public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
+public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 	
 	private ApplicationContext applicationContext;
 

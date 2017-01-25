@@ -2,6 +2,7 @@
 <html lang="pt"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:brewer="http://algaworks.brewer.com"
 	layout:decorator="'layout/LayoutPadrao'">
 <head>
 	<title>Cadastro de cidade</title>
@@ -16,17 +17,19 @@
 		</div>
 	</div>
 	<div class="container-fluid">
-		<form action="POST">
+		<form method="POST" th:object="${cidade}">
+			<brewer:message/>
 			<div class="row">
 				<div class="col-sm-6 form-group">
 					<label for="estado">Estado</label>
-					<select id="estado" class="form-control">
-						<option>Selecione o estado</option>
+					<select id="estado" class="form-control" th:field="*{estado.codigo}">
+						<option value="">Selecione o estado</option>
+						<option th:each="estado : ${estados}" th:value="${estado.codigo}" th:text="${estado.nome}"></option>
 					</select>
 				</div>
 				<div class="col-sm-6">
 					<label for="cidade">Cidade</label>
-					<input id="cidade" class="form-control"/>
+					<input id="cidade" class="form-control" th:field="*{nome}"/>
 				</div>
 			</div>
 			<button class="btn btn-primary">Salvar</button>
