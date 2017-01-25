@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -57,6 +58,7 @@ public class CidadesController {
 		return mv;
 	}
 	
+	@Cacheable("cidades")
 	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<Cidade> pesquisarPorCodigoEstado(@RequestParam(name = "estado", defaultValue = "-1") Long codigoEstado) {
