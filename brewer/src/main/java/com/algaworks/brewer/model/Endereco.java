@@ -24,6 +24,7 @@ public class Endereco implements Serializable {
 	@JoinColumn(name = "codigo_cidade")
 	private Cidade cidade;
 
+	//utilizado apenas para manter o estado no formulario
 	@Transient
 	private Estado estado;
 
