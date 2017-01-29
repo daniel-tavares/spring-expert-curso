@@ -43,6 +43,8 @@
 		<thumbnailator.version>0.4.8</thumbnailator.version>
 		<!-- Cache Guava -->
 		<guava.version>19.0</guava.version>
+		<!-- Apache Beans Utis -->
+		<commons-utils.version>1.9.2</commons-utils.version>
 	</properties>
 	
 	<build>
@@ -211,6 +213,14 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		
+		<!-- Apache Beans Utis -->
+		
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-utils.version}</version>
 		</dependency>
 		
 	</dependencies>

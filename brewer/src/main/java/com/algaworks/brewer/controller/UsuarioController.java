@@ -21,7 +21,8 @@ public class UsuarioController {
 
 	@RequestMapping("/novo")
 	public ModelAndView novo(Usuario usuario) {
-		return new ModelAndView("usuario/CadastroUsuario");
+		ModelAndView mv = new ModelAndView("usuario/CadastroUsuario");
+		return mv;
 	}
 	
 	@PostMapping("/novo")
