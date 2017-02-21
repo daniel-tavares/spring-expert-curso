@@ -47,6 +47,20 @@ Brewer.MaskCep = (function () {
 	return MaskCep;
 })();
 
+Brewer.MaskDate = (function () {
+
+	function MaskDate() {
+		this.inputData = $('.js-date');
+	}
+	
+	MaskDate.prototype.enable = function() {
+		this.inputData.mask('00/00/0000');
+	}
+	
+	return MaskDate;
+	
+})();
+
 
 
 $(function() {
@@ -58,6 +72,8 @@ $(function() {
 	
 	var maskCep = new Brewer.MaskCep();
 	maskCep.enable();
+	
+	var maskDate = new Brewer.MaskDate();
+	maskDate.enable();
+	
 });
-
-

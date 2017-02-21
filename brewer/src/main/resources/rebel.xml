@@ -8,6 +8,11 @@
 
 	<web>
 		<link target="/">
+			<dir name="/Users/Weliff/workspaces/workspace-backend/spring-expert-curso/brewer/target/m2e-wtp/web-resources">
+				<exclude name="/"/>
+			</dir>
+		</link>
+		<link target="/">
 			<dir name="/Users/Weliff/workspaces/workspace-backend/spring-expert-curso/brewer/src/main/webapp">
 			</dir>
 		</link>

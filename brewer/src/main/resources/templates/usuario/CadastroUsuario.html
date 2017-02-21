@@ -8,6 +8,7 @@
 <head>
 	<title>Cadastro de cliente</title>
 	<link rel="stylesheet" type="text/css" href="../../static/vendors/stylesheets/bootstrap-switch.min.css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
+	<link rel="stylesheet" type="text/css" href="../../static/vendors/stylesheets/bootstrap-datepicker.standalone.min.css" th:href="@{/stylesheets/vendors/bootstrap-datepicker.standalone.min.css}"/>
 </head>
 <body>
 <section layout:fragment="conteudo">
@@ -32,9 +33,11 @@
 					<label for="email" class="control-label">E-mail</label>
 					<input id="email" class="form-control"/>
 				</div>
-				<div class="form-group col-sm-3">
+				<div class="form-group col-sm-3" brewer:classforerror="dataNascimento">
 					<label for="dataNascimento" class="control-label">Data de nascimento</label>
-					<input id="dataNascimento" class="form-control"/>
+					<input id="dataNascimento" class="form-control js-date" th:field="*{dataNascimento}" autocomplete="off"
+						data-provide="datepicker" data-date-orientation="bottom" data-date-language="pt-BR"
+						data-date-autoclose="true"/>
 				</div>
 			</div>
 			<div class="row">
@@ -76,6 +79,8 @@
 </section>
 <th:block layout:fragment="javascript-extra">
 	<script src="../../static/javascripts/vendors/bootstrap-switch.min.js" th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script src="../../static/javascripts/vendors/bootstrap-datepicker.min.js" th:src="@{/javascripts/vendors/bootstrap-datepicker.min.js}"></script>
+	<script src="../../static/javascripts/vendors/bootstrap-datepicker.min.js" th:src="@{/javascripts/vendors/bootstrap-datepicker.pt-BR.min.js}"></script>
 	<script>
 		$(".js-status").bootstrapSwitch();
 	</script>
