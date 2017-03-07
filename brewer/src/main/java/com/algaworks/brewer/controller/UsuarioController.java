@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.algaworks.brewer.model.Usuario;
 import com.algaworks.brewer.service.CadastroUsuarioService;
+import com.algaworks.brewer.service.exception.UsuarioCadastradoException;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -30,8 +31,13 @@ public class UsuarioController {
 		if (result.hasErrors()) {
 			return novo(usuario);
 		}
-		cadastroUsuarioService.cadastrar(usuario);
+		try {
+			cadastroUsuarioService.cadastrar(usuario);
+		} catch (UsuarioCadastradoException e) {
+			result.rejectValue("email", e.getMessage(), e.getMessage());
+			return novo(usuario);
+		}
 		attributes.addFlashAttribute("mensagem", "Usuario salvo com sucesso!");
-		return new ModelAndView("usuario/CadastroUsuario");
+		return new ModelAndView("redirect:/usuarios/novo");
 	}
 }

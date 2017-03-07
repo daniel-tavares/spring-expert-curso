@@ -61,8 +61,6 @@ Brewer.MaskDate = (function () {
 	
 })();
 
-
-
 $(function() {
 	var maskMoney = new Brewer.MaskMoney();
 	maskMoney.enable();
