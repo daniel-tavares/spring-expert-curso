@@ -32,7 +32,7 @@
 	</div>
 	<div class="container-fluid">
 		
-		<form method="POST" class="form-vertical  js-form-loading" th:object="${cerveja}">
+		<form method="POST" class="form-vertical  js-form-loading" th:object="${cerveja}" th:action="@{/cervejas/novo}">
 			
 			<brewer:message/>
 			

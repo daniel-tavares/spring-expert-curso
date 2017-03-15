@@ -15,5 +15,9 @@ public class SegurancaController {
 		}
 		return "Login";
 	}
+	
+	public String acessoNegado() {
+		return "403";
+	}
 
 }
