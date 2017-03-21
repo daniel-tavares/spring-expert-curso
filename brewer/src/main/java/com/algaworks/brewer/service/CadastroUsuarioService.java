@@ -1,5 +1,6 @@
 package com.algaworks.brewer.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,11 @@ public class CadastroUsuarioService {
 		}
 		
 		usuarios.save(usuario);
+	}
+
+	@Transactional
+	public void alterarStatus(List<Long> codigos, StatusUsuario status) {
+		status.executar(codigos, usuarios);
 	}
 	
 }
