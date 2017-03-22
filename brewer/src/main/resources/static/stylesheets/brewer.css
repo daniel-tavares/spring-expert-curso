@@ -113,6 +113,7 @@
 /* COLUNAS - Pesquisa de Usuários */
 .table-usuarios-col-status {
 	width: 30px;
+	text-align: center;
 }
 
 /*
