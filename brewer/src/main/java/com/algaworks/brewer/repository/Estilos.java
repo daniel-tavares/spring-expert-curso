@@ -9,7 +9,7 @@ import com.algaworks.brewer.model.Estilo;
 import com.algaworks.brewer.repository.helper.estilo.EstilosQueries;
 
 @Repository
-public interface Estilos extends JpaRepository<Estilo, Long>, EstilosQueries{
+public interface Estilos extends JpaRepository<Estilo, Long>, EstilosQueries {
 	
 	public Optional<Estilo> findByNomeIgnoreCase(String nome);
 	
