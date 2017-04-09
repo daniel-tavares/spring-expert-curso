@@ -16,6 +16,7 @@ public class SecurityInitializer extends AbstractSecurityWebApplicationInitializ
 //		servletContext.getSessionCookieConfig().setMaxAge(20); se mexer na aplicação, mesmo assim é expirada
 		servletContext.setSessionTrackingModes(EnumSet.of(SessionTrackingMode.COOKIE));
 
+		//filtro para manter o encoding
 		FilterRegistration.Dynamic characterEncodingFilter = servletContext.addFilter("encodingFilter",
 				new CharacterEncodingFilter());
 		characterEncodingFilter.setInitParameter("encoding", "UTF-8");
