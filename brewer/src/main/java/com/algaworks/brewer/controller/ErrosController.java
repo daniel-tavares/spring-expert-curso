@@ -15,4 +15,9 @@ public class ErrosController {
 	public String paginaErroNoServidor() {
 		return "500";
 	}
+	
+	@GetMapping("/403")
+    public String acessoNegado() {
+        return "403";
+    }
 }
