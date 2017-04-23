@@ -25,7 +25,7 @@ Brewer.MultiSelecao = (function () {
 		
 		if(codigos) {
 			$.ajax({
-				url: '/brewer/usuarios/status',
+				url: url,
 				method: 'PUT',
 				data: {
 					codigos: codigos,

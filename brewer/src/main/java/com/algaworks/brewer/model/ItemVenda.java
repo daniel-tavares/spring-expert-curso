@@ -15,11 +15,11 @@ public class ItemVenda {
     public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
-    public Integer getQuatidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
-    public void setQuantidade(Integer quatidade) {
-        this.quantidade = quatidade;
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
     public BigDecimal getValorUnitario() {
         return valorUnitario;

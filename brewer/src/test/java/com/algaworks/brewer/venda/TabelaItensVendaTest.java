@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.algaworks.brewer.model.Cerveja;
+import com.algaworks.brewer.session.TabelaItensVenda;
 
 public class TabelaItensVendaTest {
     
@@ -36,15 +37,30 @@ public class TabelaItensVendaTest {
     @Test
     public void deveCalcularValorTotalComVariosItens() throws Exception {
         Cerveja c1 = new Cerveja();
+        c1.setCodigo(1L);
         c1.setValor(BigDecimal.TEN);
         
         Cerveja c2 = new Cerveja();
+        c2.setCodigo(2L);
         c2.setValor(new BigDecimal("8.9"));
         
         tabelaItensVenda.adicionarItem(c1, 1);
         tabelaItensVenda.adicionarItem(c2, 2);
         
         assertEquals(new BigDecimal("27.8"), tabelaItensVenda.getValorTotal());
+    }
+    
+    @Test
+    public void deveManterTamanhoDaListaParaMesmasCervejas() throws Exception {
+        Cerveja c1 = new Cerveja();
+        c1.setCodigo(1L);
+        c1.setValor(new BigDecimal("4.50"));
+        
+        tabelaItensVenda.adicionarItem(c1, 1);
+        tabelaItensVenda.adicionarItem(c1, 1);
+        
+        assertEquals(1, tabelaItensVenda.total());
+        assertEquals(new BigDecimal("9.00"), tabelaItensVenda.getValorTotal());
     }
     
 }
