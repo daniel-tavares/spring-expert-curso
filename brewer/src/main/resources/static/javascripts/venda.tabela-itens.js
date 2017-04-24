@@ -24,7 +24,24 @@ Brewer.TabelaItens = (function() {
 	}
 	
 	function onItemAdicionadoNoServidor(html) {
-		this.tabelaCervejasContainer.html(html)
+		this.tabelaCervejasContainer.html(html);
+		$('.js-tabela-cereja-quantidade-item').on('change', onQuantidadeItemAlterado.bind(this));
+	}
+	
+	function onQuantidadeItemAlterado(evento) {
+		var input = $(event.target);
+		var quantidade = input.val();
+		var codigoCerveja = input.data('codigo-cerveja');
+		
+		var resposta = $.ajax({
+			url: 'item/' + codigoCerveja,
+			method: 'PUT',
+			data: {
+				quantidade: quantidade
+			}
+		});
+		
+		resposta.done(onItemAdicionadoNoServidor.bind(this));
 	}
 	
 	return TabelaItens;
@@ -38,4 +55,5 @@ $(function () {
 	
 	var tabelaItens = new Brewer.TabelaItens(autocomplete);
 	tabelaItens.iniciar();
+	
 });
