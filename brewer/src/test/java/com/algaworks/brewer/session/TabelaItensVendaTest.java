@@ -1,4 +1,4 @@
-package com.algaworks.brewer.venda;
+package com.algaworks.brewer.session;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +16,7 @@ public class TabelaItensVendaTest {
     
     @Before
     public void setUp() {
-        this.tabelaItensVenda = new TabelaItensVenda();
+        this.tabelaItensVenda = new TabelaItensVenda("1");
     }
     
     @Test
@@ -75,6 +75,24 @@ public class TabelaItensVendaTest {
         assertEquals(1, tabelaItensVenda.total());
         assertEquals(3, tabelaItensVenda.quantidade());
         assertEquals(new BigDecimal("13.50"), tabelaItensVenda.getValorTotal());
+    }
+    
+    @Test
+    public void deveExcluirItem() throws Exception {
+        Cerveja c1 = new Cerveja();
+        c1.setCodigo(1L);
+        c1.setValor(new BigDecimal("4.50"));
+        Cerveja c2 = new Cerveja();
+        c2.setCodigo(2L);
+        c2.setValor(new BigDecimal("5.50"));
+        
+        tabelaItensVenda.adicionarItem(c1, 1);
+        tabelaItensVenda.adicionarItem(c2, 2);
+        tabelaItensVenda.removerItem(c1);
+        
+        assertEquals(1, tabelaItensVenda.total());
+        assertEquals(2, tabelaItensVenda.quantidade());
+        assertEquals(new BigDecimal("11.00"), tabelaItensVenda.getValorTotal());
     }
     
 }
