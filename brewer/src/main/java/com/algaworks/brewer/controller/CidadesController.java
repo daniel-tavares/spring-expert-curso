@@ -42,7 +42,7 @@ public class CidadesController {
 	@Autowired
 	private CadastroCidadeService cadastroCidadeService;
 	
-	@RequestMapping("/novo")
+	@RequestMapping("/nova")
 	public ModelAndView nova(Cidade cidade) {
 		ModelAndView mv = new ModelAndView("cidade/CadastroCidade");
 		mv.addObject("estados", estados.findAll());
@@ -50,7 +50,7 @@ public class CidadesController {
 	}
 	
 	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
-	@PostMapping("/novo")
+	@PostMapping("/nova")
 	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return nova(cidade);
