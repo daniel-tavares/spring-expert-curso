@@ -20,11 +20,28 @@ public class VendaValidator implements Validator {
         ValidationUtils.rejectIfEmpty(errors, "cliente.codigo", "", "Selecione um cliente na pesquisa rápida");
         
         Venda venda = (Venda) target;
+        validarSeInformaApenasHorarioEntrega(errors, venda);
+        validarSeInformouItens(errors, venda);
+        validarValorTotalNegativo(errors, venda);
         
+    }
+
+    private void validarValorTotalNegativo(Errors errors, Venda venda) {
+        if(venda.getValorTotal().signum() < 0) {
+            errors.reject("", "Valor total não pode ser negativo");
+        }
+    }
+
+    private void validarSeInformouItens(Errors errors, Venda venda) {
+        if (venda.getItens().isEmpty()) {
+            errors.reject("", "Adicione pelo menos uma cerveja na venda");
+        }
+    }
+
+    private void validarSeInformaApenasHorarioEntrega(Errors errors, Venda venda) {
         if (venda.getHoraEntrega() != null && venda.getDataEntrega() == null) {
             errors.rejectValue("dataEntrega", "", "Informe uma data da entrega para um horário");
         }
     }
-
     
 }

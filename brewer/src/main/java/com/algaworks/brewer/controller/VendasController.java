@@ -2,8 +2,6 @@ package com.algaworks.brewer.controller;
 
 import java.util.UUID;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -56,18 +54,26 @@ public class VendasController {
         if (StringUtils.isEmpty(venda.getUuid())) {
             venda.setUuid(UUID.randomUUID().toString());
         }
+        
+        mv.addObject("itens", venda.getItens());
+        mv.addObject("valorTotalItens", tabelaItens.getValorTotal(venda.getUuid()));
+        
 		return mv;
 	}
     
     @PostMapping("/nova")
-    public ModelAndView cadastrar(@Valid Venda venda, BindingResult result, RedirectAttributes attributes, 
+    public ModelAndView cadastrar(Venda venda, BindingResult result, RedirectAttributes attributes, 
             @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+
+        venda.adicionarItens(tabelaItens.getItens(venda.getUuid()));
+        venda.calcularValorTotal();
+        
+        vendaValidator.validate(venda, result);
         if (result.hasErrors()) {
             return nova(venda);
         }
         
         venda.setUsuario(usuarioSistema.getUsuario());
-        venda.adicionarItens(tabelaItens.getItens(venda.getUuid()));
         
         cadastroVendaService.salvar(venda);
         attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
@@ -97,6 +103,7 @@ public class VendasController {
     private ModelAndView mvTabelaVendas(String uuid) {
         ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
         mv.addObject("itens", tabelaItens.getItens(uuid));
+        System.out.println(tabelaItens.getItens(uuid));
         mv.addObject("valorTotal", tabelaItens.getValorTotal(uuid));
         return mv;
     }

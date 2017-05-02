@@ -34,7 +34,9 @@
 						<div class="aw-box__icon">
 							<i class="fa  fa-usd  fa-3x"></i>
 						</div>
-						<div class="aw-box__value js-valor-total-box-container">R$<span class="js-valor-total-box">0,00</span></div>
+						<div class="aw-box__value js-valor-total-box-container">
+						    R$<span class="js-valor-total-box" th:text="${{venda.valorTotal}}">0,00</span>
+						</div>
 						<div class="aw-box__title">Total</div>
 					</div>
 				</div>
@@ -88,7 +90,7 @@
 					<div class="input-group">
 						<div class="input-group-addon">R$</div>
 						<input type="text" maxlength="14" class="form-control  js-decimal" th:field="*{valorFrete}"
-							id="valorFrete" />
+							id="valorFrete" th:data-valor="${venda.valorFrete}"/>
 					</div>
 				</div>
 
@@ -98,7 +100,7 @@
 					<div class="input-group">
 						<div class="input-group-addon">R$</div>
 						<input type="text" maxlength="14" class="form-control  js-decimal" th:field="*{valorDesconto}"
-							id="valorDesconto" />
+							id="valorDesconto" th:data-valor="${venda.valorDesconto}"/>
 					</div>
 				</div>
 			</div>
@@ -123,11 +125,12 @@
 						</div>
 					</div>
 
-					<div class="bw-tabela-cervejas js-tabela-cervejas-container">
-						<div class="bw-tabela-cervejas__vazio">
+					<div class="bw-tabela-cervejas js-tabela-cervejas-container" th:data-valor="${valorTotalItens}">
+					   <th:block th:replace="venda/TabelaItensVenda :: tabelaItens">
+						<!-- <div class="bw-tabela-cervejas__vazio">
 							<i class="glyphicon  glyphicon-shopping-cart"></i> <span>Você
 								ainda não adicionou nenhuma cerveja.</span>
-						</div>
+						</div> -->
 					</div>
 				</div>
 

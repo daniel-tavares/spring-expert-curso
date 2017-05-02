@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,7 +40,7 @@ public class Venda {
     private BigDecimal valorDesconto;
     
     @Column(name = "valor_total")
-    private BigDecimal valorTotal;
+    private BigDecimal valorTotal = BigDecimal.ZERO;
     
     private String observacao;
     
@@ -57,7 +59,7 @@ public class Venda {
     private StatusVenda status = StatusVenda.ORCAMENTO;
 
     @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
-    private List<ItemVenda> itens;
+    private List<ItemVenda> itens = new ArrayList<>();
     
     @Transient
     private String uuid;
@@ -156,30 +158,6 @@ public class Venda {
         this.itens = itens;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Venda other = (Venda) obj;
-        if (codigo == null) {
-            if (other.codigo != null)
-                return false;
-        } else if (!codigo.equals(other.codigo))
-            return false;
-        return true;
-    }
 
     public String getUuid() {
         return uuid;
@@ -218,4 +196,43 @@ public class Venda {
         return dataEntrega != null;
     }
     
+    public void calcularValorTotal() {
+        BigDecimal valorTotalItens = itens.stream()
+                .map(ItemVenda::getValorTotal)
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO);
+            
+        this.valorTotal = calcularValorTotal(valorTotalItens, getValorFrete(), getValorDesconto());
+    }
+    
+    private BigDecimal calcularValorTotal(BigDecimal valorTotalItens, BigDecimal valorFrete, BigDecimal valorDesconto) {
+        return valorTotalItens
+                .add(Optional.ofNullable(valorFrete).orElse(BigDecimal.ZERO)
+                .subtract(Optional.ofNullable(valorDesconto).orElse(BigDecimal.ZERO)));
+    }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Venda other = (Venda) obj;
+        if (codigo == null) {
+            if (other.codigo != null)
+                return false;
+        } else if (!codigo.equals(other.codigo))
+            return false;
+        return true;
+    }
 }
