@@ -70,6 +70,11 @@ public class FotoStorageLocal implements FotoStorage {
 			throw new RuntimeException("Erro lendo a foto: " + foto, e);
 		}
 	}
+	
+	@Override
+	public byte[] recuperarThumbnail(String foto) {
+	    return recuperar(PREFIX_THUMBANAIL + foto);
+	}
 
 	private void moverLocalTempParaLocalPermanente(String foto) {
 		try {

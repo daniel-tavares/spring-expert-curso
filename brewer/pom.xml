@@ -1,14 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  
-  <modelVersion>4.0.0</modelVersion>
-  
-  <groupId>com.algaworks</groupId>
-  <artifactId>brewer</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  
-  <packaging>war</packaging>
-  
-  <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.algaworks</groupId>
+	<artifactId>brewer</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<packaging>war</packaging>
+
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -18,8 +19,8 @@
 		<maven-compiler-pluging.version>3.2</maven-compiler-pluging.version>
 		<flyway-maven-plugin.version>4.0.2</flyway-maven-plugin.version>
 		<mysql-connector-java.version>5.1.39</mysql-connector-java.version>
-		
-		
+
+
 		<!-- Spring MVC -->
 		<spring-framework.version>4.3.0.RELEASE</spring-framework.version>
 		<!-- Servlet API -->
@@ -49,10 +50,12 @@
 		<spring-security.version>4.1.1.RELEASE</spring-security.version>
 		<!-- Thymeleaf - Extras Spring Security -->
 		<thymeleaf-extras-springsecurity.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity.version>
-        <!-- JUnit -->
-        <junit.version>4.12</junit.version>
+		<!-- JUnit -->
+		<junit.version>4.12</junit.version>
+		<!-- Java Mail -->
+		<javax.mail.version>1.5.6</javax.mail.version>
 	</properties>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -73,7 +76,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -86,7 +89,7 @@
 		</dependencies>
 	</dependencyManagement>
 
-	
+
 	<dependencies>
 		<!-- Spring MVC -->
 		<dependency>
@@ -100,7 +103,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- Servlet API -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -108,37 +111,37 @@
 			<version>${servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Thymeleaf API -->
 		<dependency>
-		    <groupId>org.thymeleaf</groupId>
-		    <artifactId>thymeleaf</artifactId>
-		    <version>${thymeleaf.version}</version>
-		    <scope>compile</scope>
-		</dependency>	
-		
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf</artifactId>
+			<version>${thymeleaf.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<dependency>
-		    <groupId>org.thymeleaf</groupId>
-		    <artifactId>thymeleaf-spring4</artifactId>
-		    <version>${thymeleaf.version}</version>
-		    <scope>compile</scope>
-		</dependency>	
-		
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf-spring4</artifactId>
+			<version>${thymeleaf.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- Bean Validation / Hibernate Validator -->
 		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-validator</artifactId>
-		    <version>${hibernate-validator.version}</version>
-		    <scope>compile</scope>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<!-- Thyneleaf - Layout Dialect -->
 		<dependency>
-		    <groupId>nz.net.ultraq.thymeleaf</groupId>
-		    <artifactId>thymeleaf-layout-dialect</artifactId>
-		    <version>${thymeleaf-layout-dialect.version}</version>
-		    <scope>compile</scope>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+			<version>${thymeleaf-layout-dialect.version}</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -160,7 +163,7 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${jcl-over-slf4j.version}</version>
 		</dependency>
-		
+
 		<!-- JPA / Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -174,7 +177,7 @@
 			<version>${hibernate.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- MySQL Driver -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -182,14 +185,14 @@
 			<version>${mysql-connector-java.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Spring Data JPA -->
 		<dependency>
-		    <groupId>org.springframework.data</groupId>
-		    <artifactId>spring-data-jpa</artifactId>
-		    <version>${spring-data-jpa.version}</version>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring-data-jpa.version}</version>
 		</dependency>
-		
+
 		<!-- Jackson Core -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -197,15 +200,15 @@
 			<version>${jackson.core-version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Thumbnail -->
 		<dependency>
-		  <groupId>net.coobird</groupId>
-		  <artifactId>thumbnailator</artifactId>
-		  <version>${thumbnailator.version}</version>
-		  <scope>compile</scope>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>${thumbnailator.version}</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Cache Guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -213,22 +216,22 @@
 			<version>${guava.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Spring Context Support -->
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
-		
+
 		<!-- Apache Beans Utis -->
-		
+
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>${commons-utils.version}</version>
 		</dependency>
-		
+
 		<!-- Spring Security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -240,22 +243,30 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring-security.version}</version>
 		</dependency>
-		
+
 		<!-- Thymeleaf - Extras Spring Security -->
 		<dependency>
-		    <groupId>org.thymeleaf.extras</groupId>
-		    <artifactId>thymeleaf-extras-springsecurity4</artifactId>
-		    <version>${thymeleaf-extras-springsecurity.version}</version>
-		    <scope>compile</scope>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+			<version>${thymeleaf-extras-springsecurity.version}</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- JUnit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Java Mail -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>${javax.mail.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
 	</dependencies>
 </project>
