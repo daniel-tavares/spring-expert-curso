@@ -49,8 +49,8 @@ public class CidadesController {
 		return mv;
 	}
 	
-	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
 	@PostMapping("/nova")
+	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
 	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return nova(cidade);
@@ -66,9 +66,9 @@ public class CidadesController {
 		return mv;
 	}
 	
-	@Cacheable(value = "cidades", key = "#codigoEstado")
 	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
+	@Cacheable(value = "cidades", key = "#codigoEstado")
 	public List<Cidade> pesquisarPorCodigoEstado(@RequestParam(name = "estado", defaultValue = "-1") Long codigoEstado) {
 		return cidades.findByEstadoCodigo(codigoEstado);
 	}

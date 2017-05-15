@@ -26,6 +26,7 @@ import com.algaworks.brewer.controller.page.PageWrapper;
 import com.algaworks.brewer.controller.validator.VendaValidator;
 import com.algaworks.brewer.mail.Mailer;
 import com.algaworks.brewer.model.Cerveja;
+import com.algaworks.brewer.model.ItemVenda;
 import com.algaworks.brewer.model.StatusVenda;
 import com.algaworks.brewer.model.TipoPessoa;
 import com.algaworks.brewer.model.Venda;
@@ -67,18 +68,16 @@ public class VendasController {
 	public ModelAndView nova(Venda venda) {
         ModelAndView mv = new ModelAndView("venda/CadastroVenda");
         
-        if (StringUtils.isEmpty(venda.getUuid())) {
-            venda.setUuid(UUID.randomUUID().toString());
-        }
+        setUuid(venda);
         
         mv.addObject("itens", venda.getItens());
         mv.addObject("valorTotalItens", tabelaItens.getValorTotal(venda.getUuid()));
         
 		return mv;
 	}
-    
+
     @PostMapping(value = "/nova", params = "salvar")
-    public ModelAndView cadastrar(Venda venda, BindingResult result, RedirectAttributes attributes, 
+    public ModelAndView salvar(Venda venda, BindingResult result, RedirectAttributes attributes, 
             @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 
         validarVenda(venda, result);
@@ -120,7 +119,7 @@ public class VendasController {
         }
         
         venda.setUsuario(usuarioSistema.getUsuario());
-        cadastroVendaService.salvar(venda);
+        venda = cadastroVendaService.salvar(venda);
         
         mailer.enviar(venda);
         
@@ -161,6 +160,22 @@ public class VendasController {
         mv.addObject("pagina", paginaWrapper);
         return mv;
     }
+	
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable Long codigo) {
+	    Venda venda = vendas.buscarComItens(codigo);
+	    setUuid(venda);
+	    
+	    for (ItemVenda item: venda.getItens()) { 
+	        tabelaItens.adicionarItem(venda.getUuid(), item.getCerveja(), item.getQuantidade());
+	    }
+	    
+	    System.out.println(venda.getItens());
+	    
+	    ModelAndView mv = nova(venda);
+	    mv.addObject("venda", venda);
+	    return mv;
+	}
 
     private ModelAndView mvTabelaVendas(String uuid) {
         ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
@@ -174,6 +189,12 @@ public class VendasController {
         venda.adicionarItens(tabelaItens.getItens(venda.getUuid()));
         venda.calcularValorTotal();
         vendaValidator.validate(venda, result);
+    }
+    
+    private void setUuid(Venda venda) {
+        if (StringUtils.isEmpty(venda.getUuid())) {
+            venda.setUuid(UUID.randomUUID().toString());
+        }
     }
 	
 }

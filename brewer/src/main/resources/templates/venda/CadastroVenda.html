@@ -17,7 +17,8 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-10">
-					<h1>Cadastro de venda</h1>
+					<h1 th:if="${venda.nova}">Cadastro de venda</h1>
+					<h1 th:unless="${venda.nova}">Edição da venda número [[${venda.codigo}]]</h1>
 				</div>
 			</div>
 		</div>
@@ -26,7 +27,9 @@
 	<div class="container-fluid">
 		<form method="POST" th:action="@{/vendas/nova}" th:object="${venda}" class="js-formulario-principal">
             <brewer:message/>
+            
             <input type="hidden" id="uuid" th:field="*{uuid}"/>
+            <input type="hidden" th:field="*{codigo}">
             
 			<div class="row">
 				<div class="col-sm-4">

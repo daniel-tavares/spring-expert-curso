@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ import com.algaworks.brewer.service.exception.UsuarioCadastradoException;
 
 @Controller
 @RequestMapping("/usuarios")
-public class UsuarioController {
+public class UsuariosController {
 	
 	@Autowired
 	private CadastroUsuarioService cadastroUsuarioService;
@@ -50,7 +51,7 @@ public class UsuarioController {
 		return mv;
 	}
 	
-	@PostMapping("/novo")
+	@PostMapping(value={"/novo", "{\\d+}"})
 	public ModelAndView cadastrar(@Validated Usuario usuario, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return novo(usuario);
@@ -81,5 +82,13 @@ public class UsuarioController {
 	@ResponseStatus(HttpStatus.OK)
 	public void atualizarStatus(@RequestParam("codigos[]") List<Long> codigos, @RequestParam StatusUsuario status) {
 		cadastroUsuarioService.alterarStatus(codigos, status);
+	}
+	
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable Long codigo) {
+	    Usuario usuario = usuarios.buscarComGrupos(codigo);
+	    ModelAndView mv = novo(usuario);
+	    mv.addObject("usuario", usuario);
+	    return mv;
 	}
 }

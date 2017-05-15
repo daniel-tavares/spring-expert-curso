@@ -116,4 +116,14 @@ public class FotoStorageLocal implements FotoStorage {
 		return novoNome;
 	}
 
+    @Override
+    public void excluirFoto(String foto) {
+        try {
+            Files.deleteIfExists(this.local.resolve(foto));
+            Files.deleteIfExists(this.local.resolve(PREFIX_THUMBANAIL + foto));
+        } catch (IOException e) {
+            logger.warn(String.format("Erro apagando foto '%s'. Mensagem: %s", foto, e.getMessage()));
+        }
+    }
+
 }

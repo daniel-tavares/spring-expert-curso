@@ -30,16 +30,6 @@ Brewer.TabelaItens = (function() {
 		resposta.done(onItemAtualizadoNoServidor.bind(this));
 	}
 	
-	function onItemAtualizadoNoServidor(html) {
-		this.tabelaCervejasContainer.html(html);
-		
-		bindQuantidade.call(this);
-		var tabelaItem = bindTabelaItem.call(this);
-		
-		this.emitter.trigger('tabela-itens-atualizada', parseFloat(tabelaItem.data('valor-total')));
-		
-	}
-	
 	function onQuantidadeItemAlterado(evento) {
 		var input = $(event.target);
 		var quantidade = input.val();
@@ -74,6 +64,16 @@ Brewer.TabelaItens = (function() {
 		});
 		
 		resposta.done(onItemAtualizadoNoServidor.bind(this));
+	}
+	
+	function onItemAtualizadoNoServidor(html) {
+		this.tabelaCervejasContainer.html(html);
+		
+		bindQuantidade.call(this);
+		var tabelaItem = bindTabelaItem.call(this);
+		
+		this.emitter.trigger('tabela-itens-atualizada', parseFloat(tabelaItem.data('valor-total')));
+		
 	}
 	 
 	function bindQuantidade() {
