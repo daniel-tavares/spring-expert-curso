@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -29,46 +31,54 @@ public class Venda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
-    
+
     @Column(name = "data_criacao")
     private LocalDateTime dataCriacao;
-    
+
     @Column(name = "valor_frete")
     private BigDecimal valorFrete;
-    
+
     @Column(name = "valor_desconto")
     private BigDecimal valorDesconto;
-    
+
     @Column(name = "valor_total")
     private BigDecimal valorTotal = BigDecimal.ZERO;
-    
+
     private String observacao;
-    
+
     @Column(name = "data_entrega")
     private LocalDateTime dataHoraEntrega;
-    
+
     @ManyToOne
     @JoinColumn(name = "codigo_cliente")
     private Cliente cliente;
-    
+
     @ManyToOne
     @JoinColumn(name = "codigo_usuario")
     private Usuario usuario;
-    
+
     @Enumerated(EnumType.STRING)
     private StatusVenda status = StatusVenda.ORCAMENTO;
 
-    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemVenda> itens = new ArrayList<>();
-    
+
     @Transient
     private String uuid;
-    
+
     @Transient
     private LocalDate dataEntrega;
-    
+
     @Transient
     private LocalTime horaEntrega;
+
+    @PostLoad
+    private void postLoad() {
+        if (dataHoraEntrega != null) {
+            this.dataEntrega = this.dataHoraEntrega.toLocalDate();
+            this.horaEntrega = this.dataHoraEntrega.toLocalTime();
+        }
+    }
 
     public Long getCodigo() {
         return codigo;
@@ -158,7 +168,6 @@ public class Venda {
         this.itens = itens;
     }
 
-
     public String getUuid() {
         return uuid;
     }
@@ -182,7 +191,7 @@ public class Venda {
     public void setHoraEntrega(LocalTime horaEntrega) {
         this.horaEntrega = horaEntrega;
     }
-    
+
     public boolean isNova() {
         return codigo == null;
     }
@@ -195,24 +204,25 @@ public class Venda {
     public boolean temEntrega() {
         return dataEntrega != null;
     }
-    
+
     public void calcularValorTotal() {
         this.valorTotal = calcularValorTotal(getValorTotalItens(), getValorFrete(), getValorDesconto());
     }
 
     public BigDecimal getValorTotalItens() {
-        return itens.stream()
-                .map(ItemVenda::getValorTotal)
-                .reduce(BigDecimal::add)
-                .orElse(BigDecimal.ZERO);
+        return itens.stream().map(ItemVenda::getValorTotal).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
     }
-    
+
     private BigDecimal calcularValorTotal(BigDecimal valorTotalItens, BigDecimal valorFrete, BigDecimal valorDesconto) {
-        return valorTotalItens
-                .add(Optional.ofNullable(valorFrete).orElse(BigDecimal.ZERO)
+        return valorTotalItens.add(Optional.ofNullable(valorFrete).orElse(BigDecimal.ZERO)
                 .subtract(Optional.ofNullable(valorDesconto).orElse(BigDecimal.ZERO)));
     }
-    
+
+    public Long getDiasCriacao() {
+        LocalDate inicio = dataCriacao != null ? dataCriacao.toLocalDate() : LocalDate.now();
+        return ChronoUnit.DAYS.between(inicio, LocalDate.now());
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -220,7 +230,7 @@ public class Venda {
         result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
         return result;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

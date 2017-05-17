@@ -52,10 +52,6 @@ Brewer.TabelaItens = (function() {
 		resposta.done(onItemAtualizadoNoServidor.bind(this));
 	}
 	
-	function onDoubleClick(evento) {
-		$(this).toggleClass('solicitando-exclusao');
-	}
-	
 	function onExclusaoItemClick(evento) {
 		var codigoCerveja = $(evento.target).data('codigo-cerveja');
 		var resposta = $.ajax({
@@ -87,6 +83,10 @@ Brewer.TabelaItens = (function() {
 		tabelaItem.on('dblclick', onDoubleClick);
 		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this));
 		return tabelaItem;
+	}
+	
+	function onDoubleClick(evento) {
+		$(this).toggleClass('solicitando-exclusao');
 	}
 	
 	return TabelaItens;
