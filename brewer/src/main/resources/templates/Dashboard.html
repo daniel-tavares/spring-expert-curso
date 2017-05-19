@@ -96,7 +96,7 @@
                             <span>Não há dados</span>
                         </div>
                         <div>
-                            <canvas id="lineChart" height="160"></canvas>
+                            <canvas id="graficoVendasPorMes" height="160"></canvas>
                         </div>
                     </div>
                 </div>
@@ -123,6 +123,8 @@
 </section>
 
 <th:block layout:fragment="javascript-extra">
+    <script th:src="@{/javascripts/vendors/Chart.min.js}"></script>
+    <script th:src="@{/javascripts/dashboard.graficos.js}"></script>
 </th:block>
 
 </html>
