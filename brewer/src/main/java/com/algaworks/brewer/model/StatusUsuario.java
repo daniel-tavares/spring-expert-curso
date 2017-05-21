@@ -1,4 +1,4 @@
-package com.algaworks.brewer.service;
+package com.algaworks.brewer.model;
 
 import java.util.List;
 

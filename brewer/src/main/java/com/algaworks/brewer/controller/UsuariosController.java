@@ -22,12 +22,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.algaworks.brewer.controller.page.PageWrapper;
+import com.algaworks.brewer.model.StatusUsuario;
 import com.algaworks.brewer.model.Usuario;
 import com.algaworks.brewer.repository.Grupos;
 import com.algaworks.brewer.repository.Usuarios;
 import com.algaworks.brewer.repository.filter.UsuarioFilter;
 import com.algaworks.brewer.service.CadastroUsuarioService;
-import com.algaworks.brewer.service.StatusUsuario;
 import com.algaworks.brewer.service.exception.SenhaObrigatoriaUsuarioException;
 import com.algaworks.brewer.service.exception.UsuarioCadastradoException;
 
