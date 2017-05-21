@@ -9,8 +9,8 @@ import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.repository.helper.cerveja.CervejasQueries;
 
 @Repository
-public interface Cervejas extends JpaRepository<Cerveja, Long>, CervejasQueries{
+public interface Cervejas extends JpaRepository<Cerveja, Long>, CervejasQueries {
 	
 	public Optional<Cerveja> findBySkuIgnoreCase(String sku);
-	
+
 }

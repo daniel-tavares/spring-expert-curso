@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.algaworks.brewer.dto.CervejaDTO;
+import com.algaworks.brewer.dto.ItensEstoqueValorDTO;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.repository.filter.CervejaFilter;
 import com.algaworks.brewer.repository.paginacao.PaginacaoUtil;
@@ -91,6 +92,12 @@ public class CervejasImpl implements CervejasQueries {
                 .setParameter("skuOuNome", skuOuNome + "%")
                 .getResultList();
         return cervejasFiltradas;
+    }
+
+    @Override
+    public ItensEstoqueValorDTO valorItensEstoque() {
+        String hsql = "select new com.algaworks.brewer.dto.ItensEstoqueValorDTO(sum(quantidadeEstoque), sum(quantidadeEstoque * valor)) from Cerveja";
+        return this.manager.createQuery(hsql, ItensEstoqueValorDTO.class).getSingleResult();
     }
 
 }
