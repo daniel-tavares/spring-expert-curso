@@ -25,7 +25,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.algaworks.brewer.dto.VendaMes;
+import com.algaworks.brewer.dto.VendaMesDTO;
+import com.algaworks.brewer.dto.VendaMesOrigemDTO;
 import com.algaworks.brewer.model.StatusVenda;
 import com.algaworks.brewer.model.TipoPessoa;
 import com.algaworks.brewer.model.Venda;
@@ -94,8 +95,8 @@ public class VendasImpl implements VendasQueries {
     }
     
     @Override
-    public List<VendaMes> totalPorMes() {
-        List<VendaMes> vendasMes = manager.createNamedQuery("Vendas.totalPorMes", VendaMes.class).getResultList();
+    public List<VendaMesDTO> totalPorMes() {
+        List<VendaMesDTO> vendasMes = manager.createNamedQuery("Vendas.totalPorMes", VendaMesDTO.class).getResultList();
         
         LocalDate hoje = LocalDate.now();
         for(int i = 1; i <= 6; i++) {
@@ -103,13 +104,32 @@ public class VendasImpl implements VendasQueries {
             
             boolean possuiMes = vendasMes.stream().filter(v -> v.getMes().equals(mesIdeal)).findAny().isPresent();
             if(!possuiMes) {
-                vendasMes.add(i - 1, new VendaMes(mesIdeal, 0));
+                vendasMes.add(i - 1, new VendaMesDTO(mesIdeal, 0));
             }
             
             hoje = hoje.minusMonths(1);
         }
         
         return vendasMes;
+    }
+    
+    @Override
+    public List<VendaMesOrigemDTO> totalPorMesOrigem() {
+        List<VendaMesOrigemDTO> vendasMesOrigem = manager.createNamedQuery("Vendas.porOrigem",  VendaMesOrigemDTO.class).getResultList();
+        
+        LocalDate hoje = LocalDate.now();
+        for(int i = 1; i <= 6; i++) {
+            String mesIdeal = String.format("%d/%02d", hoje.getYear(), hoje.getMonthValue());
+            
+            boolean possuiMes = vendasMesOrigem.stream().filter(v -> v.getMes().equals(mesIdeal)).findAny().isPresent();
+            if(!possuiMes) {
+                vendasMesOrigem.add(i - 1, new VendaMesOrigemDTO(mesIdeal, 0, 0));
+            }
+            
+            hoje = hoje.minusMonths(1);
+        }
+        
+        return vendasMesOrigem;
     }
     
     private Long total(VendaFilter filtro) {

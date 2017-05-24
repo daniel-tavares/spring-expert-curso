@@ -1,14 +1,14 @@
 package com.algaworks.brewer.dto;
 
-public class VendaMes {
+public class VendaMesDTO {
     
     private String mes;
     private Integer total;
 
-    public VendaMes() {
+    public VendaMesDTO() {
     }
     
-    public VendaMes(String mes, Integer total) {
+    public VendaMesDTO(String mes, Integer total) {
         this.setMes(mes);
         this.setTotal(total);
     }
