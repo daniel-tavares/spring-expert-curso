@@ -18,10 +18,11 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
-import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -121,7 +122,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return conversionService;
     }
 
-//    Fixa a lingua padrão das repostas
+//    Fixa o local padrão das repostas
 //    @Bean
 //    public LocaleResolver localeResolver() {
 //        return new FixedLocaleResolver(new Locale("pt", "BR"));
@@ -150,6 +151,18 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     @Bean
     public DomainClassConverter<FormattingConversionService> domainClassConverter() {
         return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
+    }
+    
+    @Bean
+    public LocalValidatorFactoryBean validator() {
+        LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
+        validatorFactoryBean.setValidationMessageSource(messageSource());
+        return validatorFactoryBean;
+    }
+    
+    @Override
+    public Validator getValidator() {
+        return validator();
     }
 
 }
