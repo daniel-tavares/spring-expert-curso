@@ -6,11 +6,7 @@ public interface FotoStorage {
     
     String PREFIX_THUMBANAIL = "thumbnail.";
     
-	public String salvarTemporariamente(MultipartFile[] files);
-
-	public byte[] recuperarFotoTemporaria(String nome);
-
-	public void salvar(String foto);
+	public String salvar(MultipartFile[] files);
 
 	public byte[] recuperar(String foto);
 	

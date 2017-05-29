@@ -21,7 +21,7 @@ public class FotoStorageLocal implements FotoStorage {
 	private static final Logger logger = LoggerFactory.getLogger(FotoStorageLocal.class);
 	
 	private Path local;
-	private Path localTemporario;
+//	private Path localTemporario;
 	
 	public FotoStorageLocal() {
 		this(FileSystems.getDefault().getPath(System.getenv("HOME"), ".brewerfotos"));
@@ -33,34 +33,36 @@ public class FotoStorageLocal implements FotoStorage {
 	}
 	
 	@Override
-	public String salvarTemporariamente(MultipartFile[] files) {
+	public String salvar(MultipartFile[] files) {
 		String novoNome = null;
 		if (files != null && files.length > 0) {
 			MultipartFile arquivo = files[0];
 			novoNome = renomearArquivo(arquivo.getOriginalFilename());
 			try {
-				arquivo.transferTo(new File(this.localTemporario.toAbsolutePath().toString() + FileSystems.getDefault().getSeparator() + novoNome));
+				arquivo.transferTo(new File(this.local.toAbsolutePath().toString() + FileSystems.getDefault().getSeparator() + novoNome));
 			} catch (IOException e) {
-				throw new RuntimeException("Erro salvando a foto na pasta temporária", e);
+				throw new RuntimeException("Erro salvando a foto", e);
 			}
 		}
+		
+		gerarThumbnail(novoNome);
+		
 		return novoNome;
 	}
 	
-	@Override
-	public byte[] recuperarFotoTemporaria(String nome) {
-		try {
-			return Files.readAllBytes(localTemporario.resolve(nome));
-		} catch (IOException e) {
-			throw new RuntimeException("Erro lendo a foto temporária: " + nome, e);
-		}
-	}
+//	@Override
+//	public byte[] recuperarFotoTemporaria(String nome) {
+//		try {
+//			return Files.readAllBytes(localTemporario.resolve(nome));
+//		} catch (IOException e) {
+//			throw new RuntimeException("Erro lendo a foto temporária: " + nome, e);
+//		}
+//	}
 	
-	@Override
-	public void salvar(String foto) {
-		moverLocalTempParaLocalPermanente(foto);
-		gerarThumbnail(foto);
-	}
+//	public void salvar(String foto) {
+//		moverLocalTempParaLocalPermanente(foto);
+//		gerarThumbnail(foto);
+//	}
 	
 	@Override
 	public byte[] recuperar(String foto) {
@@ -76,14 +78,14 @@ public class FotoStorageLocal implements FotoStorage {
 	    return recuperar(PREFIX_THUMBANAIL + foto);
 	}
 
-	private void moverLocalTempParaLocalPermanente(String foto) {
-		try {
-			Files.move(this.localTemporario.resolve(foto), this.local.resolve(foto));
-		} catch (IOException e) {
-			throw new RuntimeException("Erro movendo a foto para destino final", e);
-		}
-		
-	}
+//	private void moverLocalTempParaLocalPermanente(String foto) {
+//		try {
+//			Files.move(this.localTemporario.resolve(foto), this.local.resolve(foto));
+//		} catch (IOException e) {
+//			throw new RuntimeException("Erro movendo a foto para destino final", e);
+//		}
+//		
+//	}
 
 	private void gerarThumbnail(String foto) {
 		try {
@@ -96,12 +98,12 @@ public class FotoStorageLocal implements FotoStorage {
 	private void criarPastas() {
 		try {
 			Files.createDirectories(this.local);
-			this.localTemporario = FileSystems.getDefault().getPath(this.local.toString(), "temp");
-			Files.createDirectories(this.localTemporario);
+//			this.localTemporario = FileSystems.getDefault().getPath(this.local.toString(), "temp");
+//			Files.createDirectories(this.localTemporario);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Pastas criadas para salvar fotos");
 				logger.debug("Pasta default:" + local.toAbsolutePath());
-				logger.debug("Pasta temporária:" + localTemporario.toAbsolutePath());
+//				logger.debug("Pasta temporária:" + localTemporario.toAbsolutePath());
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("Erro criando pasta para salvar foto", e);
