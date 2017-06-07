@@ -5,10 +5,11 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.algaworks.brewer.storage.FotoStorage;
@@ -16,6 +17,8 @@ import com.algaworks.brewer.storage.FotoStorage;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
 
+@Profile("local")
+@Component
 public class FotoStorageLocal implements FotoStorage {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FotoStorageLocal.class);
@@ -39,14 +42,13 @@ public class FotoStorageLocal implements FotoStorage {
 			MultipartFile arquivo = files[0];
 			novoNome = renomearArquivo(arquivo.getOriginalFilename());
 			try {
-				arquivo.transferTo(new File(this.local.toAbsolutePath().toString() + FileSystems.getDefault().getSeparator() + novoNome));
+			    arquivo.transferTo(new File(this.local.toAbsolutePath().toString() + FileSystems.getDefault().getSeparator() + novoNome));
+				gerarThumbnail(novoNome);
 			} catch (IOException e) {
 				throw new RuntimeException("Erro salvando a foto", e);
 			}
 		}
-		
-		gerarThumbnail(novoNome);
-		
+
 		return novoNome;
 	}
 	
@@ -75,7 +77,7 @@ public class FotoStorageLocal implements FotoStorage {
 	
 	@Override
 	public byte[] recuperarThumbnail(String foto) {
-	    return recuperar(PREFIX_THUMBANAIL + foto);
+	    return recuperar(THUMBANAIL_PREFIX + foto);
 	}
 
 //	private void moverLocalTempParaLocalPermanente(String foto) {
@@ -110,22 +112,19 @@ public class FotoStorageLocal implements FotoStorage {
 		}
 	}
 	
-	private String renomearArquivo(String nomeOriginal) {
-		String novoNome = UUID.randomUUID().toString() + "_" + nomeOriginal.replaceAll("\\s", "");
-		if(logger.isDebugEnabled()) {
-			logger.debug(String.format("Nome original: %s, novo nome do arquivo %s", nomeOriginal, novoNome));
-		}
-		return novoNome;
-	}
-
     @Override
     public void excluirFoto(String foto) {
         try {
             Files.deleteIfExists(this.local.resolve(foto));
-            Files.deleteIfExists(this.local.resolve(PREFIX_THUMBANAIL + foto));
+            Files.deleteIfExists(this.local.resolve(THUMBANAIL_PREFIX + foto));
         } catch (IOException e) {
             logger.warn(String.format("Erro apagando foto '%s'. Mensagem: %s", foto, e.getMessage()));
         }
+    }
+
+    @Override
+    public String getUrl(String foto) {
+        return "http://localhost:8080/brewer/fotos/" + foto;
     }
 
 }

@@ -104,7 +104,8 @@
 				<tbody>
 					<tr th:each="cerveja : ${cervejasPage.conteudo}">
 						<td class="text-center">
-							<img th:src="@{/fotos/thumbnail.{fotoNome}(fotoNome=${cerveja.fotoOuMock})}" class="img-responsive"/>
+							<!-- <img th:src="@{/fotos/thumbnail.{fotoNome}(fotoNome=${cerveja.fotoOuMock})}" class="img-responsive"/> -->
+ 							<img th:src="${cerveja.urlThumbnailFoto}" class="img-responsive"/>
 						</td>
 						<td class="text-center">[[${cerveja.sku}]]</td>
 						<td>[[${cerveja.nome}]]</td>
