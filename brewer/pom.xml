@@ -55,11 +55,13 @@
 		<!-- Java Mail -->
 		<javax.mail.version>1.5.6</javax.mail.version>
 		<!-- AWS SDK - S3 -->
-        <aws-java-sdk-s3.version>1.10.77</aws-java-sdk-s3.version>
+		<aws-java-sdk-s3.version>1.10.77</aws-java-sdk-s3.version>
+		<!-- Apache Commons DBCP -->
+		<commons-dbcp2.version>2.1.1</commons-dbcp2.version>
 	</properties>
 
 	<build>
-	   <finalName>${artifactId}</finalName>
+		<finalName>${artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -77,8 +79,56 @@
 					<driver>com.mysql.jdbc.Driver</driver>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.github.jsimone</groupId>
+									<artifactId>webapp-runner</artifactId>
+									<version>8.5.11.3</version>
+									<destFileName>webapp-runner.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+		</profile>
+
+		<profile>
+			<id>prod</id>
+
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
+			<dependencies>
+				<!-- MySQL Driver -->
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>${mysql-connector-java.version}</version>
+					<scope>compile</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
 	<dependencyManagement>
 		<dependencies>
@@ -181,14 +231,6 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- MySQL Driver -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-connector-java.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- Spring Data JPA -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
@@ -270,13 +312,21 @@
 			<version>${javax.mail.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- AWS SDK - S3 -->
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-s3</artifactId>
-            <version>${aws-java-sdk-s3.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk-s3.version}</version>
+		</dependency>
+
+		<!-- Apache Commons DBCP -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>${commons-dbcp2.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
 	</dependencies>
 </project>
