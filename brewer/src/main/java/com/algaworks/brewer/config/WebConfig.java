@@ -112,7 +112,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
 //        NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
         BigDecimalFormatter integerFormatter = new BigDecimalFormatter("#,##0");
-        conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
+        conversionService.addFormatterForFieldType(Integer.class, integerFormatter); // funciona pq Big e Integer herdam de number
 
         DateTimeFormatterRegistrar dateTimeFormatterRegistrar = new DateTimeFormatterRegistrar();
         dateTimeFormatterRegistrar.setDateFormatter(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
